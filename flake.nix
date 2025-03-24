@@ -1,45 +1,58 @@
 {
+  description = "My Awesome Desktop bar";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    astal = {
-      url = "github:aylur/astal";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     ags = {
       url = "github:aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, astal, ags }: let
+  outputs = {
+    self,
+    nixpkgs,
+    ags,
+  }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-  in {
-    packages.${system}. default = pkgs.stdenvNoCC.mkDerivation rec {
-      name = "DesktopBar";
-      src = ./.;
-
-      nativeBuildInputs = [
-        ags.packages.${system}.default
-        pkgs.wrapGAppsHook
-        pkgs.gobject-introspection
-        pkgs.libsoup_3
-        pkgs.brightnessctl
-      ];
-
-      buildInputs = with astal.packages.${system}; [
+    astallibs = with ags.packages.${system}; [
         astal3
         tray
         io
         wireplumber 
         network
         mpris
+        pkgs.wrapGAppsHook
+        pkgs.gobject-introspection
+        pkgs.libsoup_3
+        pkgs.brightnessctl
       ];
+      ags_package = (
+        ags.packages.${system}.ags.override {
+          extraPackages = astallibs;
+        }
+      );
+  in {
+    packages.${system} = {
+      default = ags.lib.bundle {
+        inherit pkgs;
+        src = ./.;
+        name = "DesktopBar";
+        entry = "app.ts";
 
-      installPhase = ''
-        mkdir -p $out/bin
-        ags bundle app.ts $out/bin/${name}
-      '';
+        extraPackages = astallibs;
+      };
+      ags_bin = ags_package;
     };
-  };
+
+      devShells.${system} = {
+        default = pkgs.mkShellNoCC {
+          nativeBuildInputs = [
+            ags_package
+          ];
+
+        };
+      };
+    };
 }
