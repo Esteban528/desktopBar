@@ -1,23 +1,28 @@
-import { Astal, Gtk } from "astal/gtk3"
-import { bind, exec, GLib } from "astal"
-
-const userName = "Esteban528";
+import { exec } from "astal"
 
 export default function PowerButtons() {
-  return <box spacing={10} className={"Profile"} >
+  return <box spacing={10} className={"Profile"}>
+
+    <button
+      onClicked={() => exec("systemctl suspend")}
+    >
+      <box>
+        <icon icon="media-playback-pause" tooltipText={"Suspend"} />
+      </box>
+    </button>
+
+    <button
+      onClicked={() => exec("reboot")}
+    >
+      <icon icon="system-reboot-symbolic" tooltipText={"Reboot"} />
+    </button>
+
     <button
       onClicked={() => {
         exec("poweroff")
       }}
     >
-      <label>Power off</label>
-    </button>
-
-    <button
-      onClicked={() => exec("systemctl suspend")}
-    >
-      <label>Sleep</label>
+      <icon icon="system-shutdown-symbolic" tooltipText={"Poweroff"} />
     </button>
   </box>
-
 }

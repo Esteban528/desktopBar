@@ -86,8 +86,11 @@ $bordercolor: #{"@theme_borders"};
     background-color: $bg;
     border: 1px solid $bordercolor;
     border-radius: $radius;
-    padding: 10px;
+    > box { 
+      margin: $gap;
+    }
   }
+
 }
 
 .Profile {

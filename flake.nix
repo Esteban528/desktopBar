@@ -24,6 +24,7 @@
         pkgs.wrapGAppsHook
         pkgs.gobject-introspection
         pkgs.libsoup_3
+        pkgs.brightnessctl
       ];
 
       buildInputs = with astal.packages.${system}; [

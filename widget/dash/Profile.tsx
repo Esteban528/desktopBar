@@ -17,22 +17,3 @@ export default function Profile() {
 
 // TO do
 //<label label={` ${GLib.getenv("USER")}@${exec("cat /etc/hostname")}`} className={"username"} />
-async function requestGithubStats() {
-  const url = new URL(`https://api.github.com/users/${userName}/repos`)
-
-  try {
-    const res = await fetch(url)
-    const json = await res.json()
-    print(json)
-  } catch (e) {
-    printerr(e);
-  }
-}
-//const user = "{args:0}"
-//
-//const getStars = async () => {
-//  const result = await fetch();
-//  const data = await result.json();
-//  const stars = data.reduce((acc, repo) => repo.stargazers_count + acc, 0);
-//  console.log(`El usuario tiene  ${stars} :star:  en repositorios públicos`);
-//}

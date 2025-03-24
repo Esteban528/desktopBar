@@ -1,7 +1,7 @@
 import { App, Astal, Gtk, Gdk } from "astal/gtk3"
-import MprisPlayers from "./MediaPlayers"
 import Profile from "./Profile"
 import PowerButtons from "./PowerButtons"
+import Controls from "./Controls"
 
 export default function Dashboard(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT } = Astal.WindowAnchor
@@ -14,19 +14,30 @@ export default function Dashboard(gdkmonitor: Gdk.Monitor) {
     application={App}
     name="Dashboard"
 
-    //widthRequest={400}
-    //heightRequest={500}
+  //widthRequest={400}
+  //heightRequest={500}
   >
 
     <centerbox
-      className="dashboard">
+      className="dashboard"
+    >
       <box
         vertical
         heightRequest={10}
+        spacing={10}
+
+        valign={Gtk.Align.CENTER}
+        halign={Gtk.Align.CENTER}
       >
         <Profile />
-        <PowerButtons/>
+        <box
+          valign={Gtk.Align.CENTER}
+          halign={Gtk.Align.START}
+        >
+          <Controls />
+        </box>
+        <PowerButtons />
       </box>
     </centerbox>
-  </window>
+  </window >
 }
