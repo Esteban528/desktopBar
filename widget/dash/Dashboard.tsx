@@ -2,15 +2,16 @@ import { App, Astal, Gtk, Gdk } from "astal/gtk3"
 import Profile from "./Profile"
 import PowerButtons from "./PowerButtons"
 import Controls from "./Controls"
+import NotificationContainer from "./NotificationContainer"
 
 export default function Dashboard(gdkmonitor: Gdk.Monitor) {
-  const { TOP, LEFT } = Astal.WindowAnchor
+  const { TOP, RIGHT } = Astal.WindowAnchor
 
   return <window
     className="dashBoard"
     gdkmonitor={gdkmonitor}
     exclusivity={Astal.Exclusivity.EXCLUSIVE}
-    anchor={TOP | LEFT}
+    anchor={TOP | RIGHT}
     application={App}
     name="Dashboard"
 

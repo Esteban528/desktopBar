@@ -23,6 +23,7 @@
         wireplumber 
         network
         mpris
+        notifd
         pkgs.wrapGAppsHook
         pkgs.gobject-introspection
         pkgs.libsoup_3

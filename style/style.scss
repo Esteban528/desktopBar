@@ -1,4 +1,6 @@
 // https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
+@use "sass:string";
+
 $fg: #{"@theme_fg_color"};
 $bg: #{"@theme_bg_color"};
 $bgl: #282727;
@@ -7,6 +9,11 @@ $accent: #{"@theme_selected_bg_color"};
 $radius: 4px;
 $gap: 10px;
 $bordercolor: #{"@theme_borders"};
+$error: red;
+
+@function gtkalpha($c, $a) {
+  @return string.unquote("alpha(#{$c},#{$a})");
+}
 
 @mixin unset($rec: false) {
   background: none;
@@ -37,7 +44,7 @@ $bordercolor: #{"@theme_borders"};
     background-color: $bg;
     border-radius: (4px);
 
-    padding: 2px 20px;
+    padding: 0 20px;
   }
 }
 
@@ -63,6 +70,10 @@ $bordercolor: #{"@theme_borders"};
 
 .dashboardButton {
   border-radius: $radius;
+  box {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
 
   &:hover {
     background-color: $bgl;
@@ -73,6 +84,7 @@ $bordercolor: #{"@theme_borders"};
 }
 
 .Media {
+  font-family: Iosevka NF;
   button {
     font-weight: 400;
     background-color: transparent;
@@ -82,15 +94,15 @@ $bordercolor: #{"@theme_borders"};
 // Dashboard
 .dashBoard {
   & > centerbox {
-    margin: $gap;
     background-color: $bg;
-    border: 1px solid $bordercolor;
+    margin: 0.5rem 1rem 0.5rem 1rem;
+    box-shadow: 2px 3px 8px 0 gtkalpha(black, 0.4);
+    border: 1px solid gtkalpha($fg, 0.1);;
     border-radius: $radius;
-    > box { 
+    > box {
       margin: $gap;
     }
   }
-
 }
 
 .Profile {
@@ -108,10 +120,11 @@ $bordercolor: #{"@theme_borders"};
 
 .MusicPlayerWindow {
   & > centerbox {
-    margin-top: 10px;
     background-color: $bg;
     border-radius: $radius;
-    border: 1px solid $bordercolor;
+    margin: 0.5rem 1rem 0.5rem 1rem;
+    box-shadow: 2px 3px 8px 0 gtkalpha(black, 0.4);
+    border: 1px solid gtkalpha($fg, 0.1);;
   }
 }
 
@@ -160,6 +173,120 @@ $bordercolor: #{"@theme_borders"};
       min-height: 0;
       padding: 0.4rem;
       margin: 0 0.2rem;
+    }
+  }
+}
+
+/* Notification */
+
+window.NotificationPopups {
+  all: unset;
+}
+
+eventbox.Notification {
+  &:first-child > box {
+    margin-top: 1rem;
+  }
+
+  &:last-child > box {
+    margin-bottom: 1rem;
+  }
+
+  // eventboxes can not take margins so we style its inner box instead
+  > box {
+    min-width: 300px;
+    border-radius: $radius;
+    background-color: $bg;
+    margin: 0.5rem 1rem 0.5rem 1rem;
+    box-shadow: 2px 3px 8px 0 gtkalpha(black, 0.4);
+    border: 1pt solid gtkalpha($fg, 0.03);
+  }
+
+  &.critical > box {
+    border: 1pt solid gtkalpha($error, 0.4);
+
+    .header {
+      .app-name {
+        color: gtkalpha($error, 0.8);
+      }
+
+      .app-icon {
+        color: gtkalpha($error, 0.6);
+      }
+    }
+  }
+
+  .header {
+    padding: 0.5rem;
+    color: gtkalpha($fg, 0.5);
+
+    .app-icon {
+      margin: 0 0.4rem;
+    }
+
+    .app-name {
+      margin-right: 0.3rem;
+      font-weight: bold;
+
+      &:first-child {
+        margin-left: 0.4rem;
+      }
+    }
+
+    .time {
+      margin: 0 0.4rem;
+    }
+
+    button {
+      padding: 0.2rem;
+      min-width: 0;
+      min-height: 0;
+    }
+  }
+
+  separator {
+    margin: 0 0.2rem;
+    background-color: gtkalpha($fg, 0.1);
+  }
+
+  .content {
+    margin: 1rem;
+    margin-top: 0.5rem;
+
+    .summary {
+      // font-size: 1.0em;
+      color: $fg;
+    }
+
+    .body {
+      color: gtkalpha($fg, 0.8);
+    }
+
+    .image {
+      border: 1px solid gtkalpha($fg, 0.02);
+      margin-right: 0.5rem;
+      border-radius: 9px;
+      min-width: 60px;
+      min-height: 60px;
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
+  .actions {
+    margin: 1rem;
+    margin-top: 0;
+
+    button {
+      margin: 0 0.3rem;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }

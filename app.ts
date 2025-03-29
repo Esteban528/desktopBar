@@ -3,6 +3,7 @@ import style from "./style/style.scss"
 import Bar from "./widget/Bar"
 import Dashboard from "./widget/dash/Dashboard"
 import MusicPlayer from "./widget/dash/MusicPlayer"
+import NotificationPopups from "./widget/NotificationPopup"
 
 App.start({
   css: style,
@@ -15,5 +16,7 @@ App.start({
 
     App.get_monitors().map(MusicPlayer)
     App.toggle_window("MusicPlayer")
+
+    App.get_monitors().map(NotificationPopups)
   },
 })
