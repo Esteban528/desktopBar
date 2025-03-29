@@ -12,6 +12,7 @@ function Media() {
   return <box className="Media">
     {bind(mpris, "players").as(ps => ps[0] ? (
       <box>
+        <icon icon="emblem-music-symbolic"/>
         <box
           className="Cover"
           valign={Gtk.Align.CENTER}
@@ -30,7 +31,7 @@ function Media() {
         />
       </box>
     ) : (
-      <label label="Nothing Playing" />
+      <label label="" />
     ))}
   </box>
 }

@@ -4,15 +4,23 @@ export default function ActiveClient() {
   const activeClient = Variable<WindowInfo>("activeClient").poll(450, () =>
     getActiveWindow())
 
-  return <box>
-    <label maxWidthChars={15} label={bind(activeClient).as(client => {
-      if (!client || client == null)
-        return "";
-      const title = client.title ?? "";
-      const result = title.length > 20 ? `${title.substring(0, 20)}... - ${client.app_id}` : title;
-      return result;
-    })} />
-  </box>
+  return (
+    <box spacing={10}>
+      {bind(activeClient, "app_id") !== "" && (
+        <icon
+          icon={bind(activeClient).as(client => client?.app_id === "zen" ? "zen-beta" : client?.app_id ?? "")}
+        />
+      )}
+      <label
+        maxWidthChars={15}
+        label={bind(activeClient).as(client => {
+          if (!client) return "";
+          const title = client.title ?? "";
+          return title.length > 20 ? `${title.substring(0, 20)}... - ${client.app_id}` : title;
+        })}
+      />
+    </box>
+  );
 }
 
 function getActiveWindow() {
