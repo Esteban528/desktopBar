@@ -1,4 +1,3 @@
-//Original file: https://github.com/Aylur/astal/blob/main/examples/gtk3/js/media-player/widget/MediaPlayer.tsx
 import { Astal, Gtk } from "astal/gtk3"
 import Mpris from "gi://AstalMpris"
 import { bind } from "astal"
@@ -24,7 +23,10 @@ function MediaPlayer({ player }: { player: Mpris.Player }) {
     `background-image: url('${c}')`)
 
   const playerIcon = bind(player, "entry").as(e =>
-    Astal.Icon.lookup_icon(e) ? e : "audio-x-generic-symbolic")
+    e && Astal.Icon.lookup_icon(e)
+      ? e
+      : "audio-x-generic-symbolic"
+  );
 
   const position = bind(player, "position").as(p => player.length > 0
     ? p / player.length : 0)
