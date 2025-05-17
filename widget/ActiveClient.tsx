@@ -1,4 +1,5 @@
 import { Variable, GLib, bind, exec } from "astal"
+import { getWindows, getWorkSpaces, type WindowInfo } from "../libs/windows";
 
 const clientNames = {
   'chromium-browser': 'chromium'
@@ -19,12 +20,11 @@ export default function ActiveClient() {
       ) : null}
       <label
         maxWidthChars={15}
+        className="activeClient"
         label={bind(activeClient).as(client => {
           if (!client) return "";
           const title = client.title ?? "";
-          return title.length > 20
-            ? `${title.substring(0, 20)}... - ${client.app_id}`
-            : title;
+          return title.replace(/[^a-zA-Z0-9| \-]/g, '');
         })}
       />
     </box>
@@ -32,17 +32,7 @@ export default function ActiveClient() {
 }
 
 function getActiveWindow() {
-  const out = exec("niri msg --json windows");
-  const windows: Array<WindowInfo> = JSON.parse(out);
+  const windows = getWindows();
   return windows.find(client => client.is_focused);
 }
 
-interface WindowInfo {
-  id: number;
-  title: string;
-  app_id: string;
-  pid: number;
-  workspace_id: number;
-  is_focused: boolean;
-  is_floating: boolean;
-}

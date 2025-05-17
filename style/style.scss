@@ -289,4 +289,22 @@ eventbox.Notification {
       }
     }
   }
+
+}
+
+
+.ws { 
+  @include unset();
+  border-radius: $radius;
+  padding: 0;
+  margin: 0;
+  font-size: 8px;
+
+  &.active { 
+  font-size: 16px;
+    color: $accent;
+  }
+}
+
+.activeClient { 
 }
