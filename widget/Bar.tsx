@@ -4,6 +4,7 @@ import Systray from "./Tray"
 import Music from "./Music"
 import ActiveClient from "./ActiveClient"
 import DashboardButton from "./DashboardButton"
+import WorkspaceDash from "./Workspaces"
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
@@ -22,6 +23,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         spacing={17}
         halign={Gtk.Align.START}
       >
+        <WorkspaceDash />
         <ActiveClient />
         <Music />
       </box>
