@@ -1,7 +1,5 @@
 import { Variable, GLib, bind, exec, timeout } from "astal"
 import { Gtk, App } from "astal/gtk3";
-import Audio from "./Audio"
-import Networking from "./Networking"
 
 export default function DashboardButton() {
   const show = Variable<boolean>(false);
@@ -21,9 +19,6 @@ export default function DashboardButton() {
     }}
   >
     <box spacing={3}>
-
-      <Audio />
-      <Networking />
       <icon icon={GLib.get_os_info("LOGO") || "missing-symbolic"} />
       <revealer
         revealChild={bind(show)}

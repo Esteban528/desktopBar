@@ -23,8 +23,10 @@ export default function ActiveClient() {
         className="activeClient"
         label={bind(activeClient).as(client => {
           if (!client) return "";
-          const title = client.title ?? "";
-          return title.replace(/[^a-zA-Z0-9| \-]/g, '');
+          let title = client.title ?? "";
+          title = title.replace(/[^a-zA-Z0-9| \-]/g, '')
+          const add = title.length >= 30 ? "..." : "";
+          return `${title.substr(0, 30)} ${add}`;
         })}
       />
     </box>

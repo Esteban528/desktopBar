@@ -14,7 +14,7 @@ function Media() {
       {bind(mpris, "players").as(ps =>
         ps[0] ? (
           <box>
-            <icon icon="emblem-music-symbolic" />
+            <icon icon="folder-music-symbolic" />
             <box
               className="Cover"
               valign={Gtk.Align.CENTER}

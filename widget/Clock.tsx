@@ -4,7 +4,7 @@ import { Variable, GLib } from "astal"
 
 export default function Clock() {
   const formatHour = "%H:%M";
-  const formatDate = "%A %e %B";
+  const formatDate = "%e %B";
 
   const time = Variable<string>("").poll(1000, () =>
     GLib.DateTime.new_now_local().format(formatHour)!)
@@ -15,7 +15,6 @@ export default function Clock() {
   return <box
     className="clock"
     hexpand
-    spacing={6}
   >
     <label
       className="date"
