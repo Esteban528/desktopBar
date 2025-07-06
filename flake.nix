@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+
     ags = {
       url = "github:aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,44 +17,62 @@
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    astallibs = with ags.packages.${system}; [
-        astal3
-        tray
-        io
-        wireplumber 
-        network
-        mpris
-        notifd
+    pname = "DesktopBar";
+    entry = "app.ts";
+
+    astalPackages = with ags.packages.${system}; [
+      astal3
+      tray
+      io
+      wireplumber 
+      network
+      mpris
+      notifd
+    ];
+
+    extraPackages =
+      astalPackages
+      ++ [
         pkgs.wrapGAppsHook
         pkgs.gobject-introspection
         pkgs.libsoup_3
         pkgs.brightnessctl
       ];
-      ags_package = (
-        ags.packages.${system}.ags.override {
-          extraPackages = astallibs;
-        }
-      );
   in {
     packages.${system} = {
-      default = ags.lib.bundle {
-        inherit pkgs;
+      default = pkgs.stdenv.mkDerivation {
+        name = pname;
         src = ./.;
-        name = "DesktopBar";
-        entry = "app.ts";
 
-        extraPackages = astallibs;
+        nativeBuildInputs = with pkgs; [
+          wrapGAppsHook
+          gobject-introspection
+          ags.packages.${system}.default
+        ];
+
+        buildInputs = extraPackages ++ [pkgs.gjs];
+
+        installPhase = ''
+          runHook preInstall
+
+          mkdir -p $out/bin
+          mkdir -p $out/share
+          cp -r * $out/share
+          ags bundle ${entry} $out/bin/${pname} -d "SRC='$out/share'"
+
+          runHook postInstall
+        '';
       };
-      ags_bin = ags_package;
     };
 
-      devShells.${system} = {
-        default = pkgs.mkShellNoCC {
-          nativeBuildInputs = [
-            ags_package
-          ];
-
-        };
+    devShells.${system} = {
+      default = pkgs.mkShell {
+        buildInputs = [
+          (ags.packages.${system}.default.override {
+            inherit extraPackages;
+          })
+        ];
       };
     };
+  };
 }
